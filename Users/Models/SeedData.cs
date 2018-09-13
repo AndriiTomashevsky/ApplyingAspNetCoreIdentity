@@ -8,7 +8,7 @@ namespace SportsStore.Models
 {
     public static class SeedData
     {
-        public static async void EnsurePopulated(IApplicationBuilder app)
+        public static void EnsurePopulated(IApplicationBuilder app)
         {
             AppIdentityDbContext context = app.ApplicationServices
                 .GetRequiredService<AppIdentityDbContext>();
@@ -17,15 +17,15 @@ namespace SportsStore.Models
 
             context.Database.Migrate();
 
-            if (!await context.Users.AnyAsync())
+            if (!context.Users.AnyAsync().Result)
             {
                 AppUser joe = new AppUser { UserName = "Joe", Email = "joe@example.com", };
                 AppUser alice = new AppUser { UserName = "Alice", Email = "alice@example.com", };
                 AppUser bob = new AppUser { UserName = "Bob", Email = "bob@example.com", };
 
-                await userManager.CreateAsync(joe, "secret123");
-                await userManager.CreateAsync(alice, "secret123");
-                await userManager.CreateAsync(bob, "secret123");
+                userManager.CreateAsync(joe, "secret123");
+                userManager.CreateAsync(alice, "secret123");
+                userManager.CreateAsync(bob, "secret123");
             }
 
             context.SaveChanges();

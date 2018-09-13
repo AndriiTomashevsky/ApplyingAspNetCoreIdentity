@@ -52,6 +52,8 @@ namespace Users
             app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
             SeedData.EnsurePopulated(app);
+            AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices,
+                Configuration).Wait();
         }
     }
 }
